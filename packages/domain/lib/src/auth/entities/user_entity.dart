@@ -4,8 +4,8 @@ class UserEntity extends Equatable {
   const UserEntity({
     required this.id,
     required this.username,
-    this.avatarUrl,
     required this.role,
+    this.avatarUrl,
   });
 
   final String id;

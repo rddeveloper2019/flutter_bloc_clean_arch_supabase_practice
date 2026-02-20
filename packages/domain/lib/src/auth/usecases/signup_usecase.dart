@@ -1,7 +1,7 @@
-import 'package:core/errors.dart';
-import 'package:core/usecase.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:core/errors.dart';
+import 'package:core/usecase.dart';
 
 import '../repositories/auth_repository.dart';
 
@@ -17,7 +17,7 @@ class SignupParams extends Equatable {
   final String username;
 
   @override
-  List<Object> get props => [email, password, username];
+  List<Object?> get props => [email, password, username];
 }
 
 class SignupUseCase implements UseCase<void, SignupParams> {

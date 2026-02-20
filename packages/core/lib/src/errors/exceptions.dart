@@ -4,7 +4,9 @@ class AppException implements Exception {
   final String message;
 
   @override
-  String toString() => '${runtimeType.toString()}: $message';
+  String toString() {
+    return '${runtimeType.toString()}: $message';
+  }
 }
 
 class AuthenticationException extends AppException {
@@ -30,7 +32,7 @@ class StorageServerException extends AppException {
 class NetworkException extends AppException {
   const NetworkException({
     super.message =
-        'Newtork connection failed. '
+        'Network connection failed. '
         'Please check your internet connection',
   });
 }

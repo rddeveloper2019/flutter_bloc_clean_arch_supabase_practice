@@ -12,7 +12,7 @@ class LoginParams extends Equatable {
   final String password;
 
   @override
-  List<Object> get props => [email, password];
+  List<Object?> get props => [email, password];
 }
 
 class LoginUseCase implements UseCase<void, LoginParams> {

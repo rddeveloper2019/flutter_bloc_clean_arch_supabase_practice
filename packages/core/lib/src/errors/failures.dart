@@ -2,14 +2,15 @@ import 'package:equatable/equatable.dart';
 
 abstract class Failure extends Equatable {
   const Failure({required this.message});
-
   final String message;
 
   @override
-  List<Object> get props => [message];
+  List<Object?> get props => [message];
 
   @override
-  String toString() => '${runtimeType.toString()}: $message';
+  String toString() {
+    return '${runtimeType.toString()}: $message';
+  }
 }
 
 class ServerFailure extends Failure {
@@ -17,7 +18,9 @@ class ServerFailure extends Failure {
 }
 
 class NetworkFailure extends Failure {
-  const NetworkFailure({super.message = 'Please check your connection...'});
+  const NetworkFailure({
+    super.message = "Please check your network connection",
+  });
 }
 
 class AuthenticationFailure extends Failure {
@@ -26,12 +29,12 @@ class AuthenticationFailure extends Failure {
 
 class PermissionFailure extends Failure {
   const PermissionFailure({
-    super.message = 'You do not have permission for the request.',
+    super.message = "You do not have permissions for the request",
   });
 }
 
 class NotFoundFailure extends Failure {
-  const NotFoundFailure({super.message = 'The data requested not found'});
+  const NotFoundFailure({super.message = "The requested data not found"});
 }
 
 class ConnectionFailure extends Failure {
@@ -40,6 +43,6 @@ class ConnectionFailure extends Failure {
 
 class UnknownFailure extends Failure {
   const UnknownFailure({
-    super.message = 'An unknown error has occurred. Please try again later.',
+    super.message = "Unknown error has occurred. Please try again later",
   });
 }

@@ -13,14 +13,7 @@ final class _AuthenticationStatusChanged extends AuthenticationEvent {
   final UserEntity? user;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [user];
 }
 
-final class _AuthenticationStatusChanged extends AuthenticationEvent {
-  const _AuthenticationStatusChanged(this.user);
-
-  final UserEntity? user;
-
-  @override
-  List<Object?> get props => [];
-}
+final class AuthenticationLogoutRequested extends AuthenticationEvent {}

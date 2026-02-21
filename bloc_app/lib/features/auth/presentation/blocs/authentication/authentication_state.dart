@@ -4,24 +4,21 @@ enum AuthenticationStatus { unknown, authenticated, unauthenticated }
 
 class AuthenticationState extends Equatable {
   const AuthenticationState._({
-    this.authenticationStatus = AuthenticationStatus.unknown,
+    this.status = AuthenticationStatus.unknown,
     this.user,
   });
 
   const AuthenticationState.unknown() : this._();
 
   const AuthenticationState.authenticated(UserEntity user)
-    : this._(
-        authenticationStatus: AuthenticationStatus.authenticated,
-        user: user,
-      );
+    : this._(status: AuthenticationStatus.authenticated, user: user);
 
   const AuthenticationState.unauthenticated()
-    : this._(authenticationStatus: AuthenticationStatus.unauthenticated);
+    : this._(status: AuthenticationStatus.unauthenticated);
 
-  final AuthenticationStatus authenticationStatus;
+  final AuthenticationStatus status;
   final UserEntity? user;
 
   @override
-  List<Object?> get props => [authenticationStatus, user];
+  List<Object?> get props => [status, user];
 }

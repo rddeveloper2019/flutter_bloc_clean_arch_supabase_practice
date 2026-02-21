@@ -5,7 +5,7 @@ import 'package:core/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/user_model.dart';
-import './auth_remote_datasource.dart';
+import 'auth_remote_datasource.dart';
 
 class SupabaseAuthRemoteDatasource implements AuthRemoteDatasource {
   SupabaseAuthRemoteDatasource({required SupabaseClient supabaseClient})

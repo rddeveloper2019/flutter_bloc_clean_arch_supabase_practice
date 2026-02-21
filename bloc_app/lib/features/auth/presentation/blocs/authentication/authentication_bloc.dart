@@ -43,7 +43,7 @@ class AuthenticationBloc
     }
   }
 
-  void _onLogoutRequested(
+  Future<void> _onLogoutRequested(
     AuthenticationLogoutRequested event,
     Emitter<AuthenticationState> emit,
   ) async {

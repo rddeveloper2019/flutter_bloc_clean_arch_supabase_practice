@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:go_router/go_router.dart';
 import 'core/di/di.dart';
 import 'features/auth/presentation/blocs/authentication/authentication_bloc.dart';
 
@@ -28,12 +28,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [BlocProvider.value(value: getIt<AuthenticationBloc>())],
-      child: MaterialApp(
+      child: MaterialApp.router(
         title: 'Community Board Bloc',
         theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-        home: const Scaffold(
-          body: Center(child: Text('Project setup complete')),
-        ),
+        routerConfig: getIt<GoRouter>(),
       ),
     );
   }

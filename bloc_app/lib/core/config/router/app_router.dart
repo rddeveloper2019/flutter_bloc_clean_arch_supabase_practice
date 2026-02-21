@@ -90,8 +90,8 @@ GoRouter createRouter(AuthenticationBloc authBloc) {
         },
         routes: [
           GoRoute(
-            path: RoutePaths.postDetail,
-            name: RouteNames.postDetail,
+            path: RoutePaths.postEdit,
+            name: RouteNames.postEdit,
             builder: (BuildContext context, GoRouterState state) {
               final postId = state.pathParameters['postId']!;
               return PostFormPage(postId: postId);

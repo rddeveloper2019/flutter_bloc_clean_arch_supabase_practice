@@ -17,7 +17,7 @@ abstract class RoutePaths {
 
   static const String postCreate = '/create';
   static const String postDetail = '/post-detail/:postId';
-  static const String userDetail = '/user/:postId';
+  static const String userDetail = '/user/:userId';
 }
 
 abstract class RouteNames {

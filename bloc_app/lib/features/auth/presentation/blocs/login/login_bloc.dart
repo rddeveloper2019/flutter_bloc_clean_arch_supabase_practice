@@ -28,12 +28,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       LoginParams(email: event.email, password: event.password),
     );
     result.fold(
-      (Failure failure) {
-        emit(LoginLoadFailure(failure: failure));
-      },
-      (_) {
-        emit(const LoginLoadSuccess(data: null));
-      },
+      (Failure failure) => emit(LoginLoadFailure(failure: failure)),
+      (_) => emit(const LoginLoadSuccess(data: null)),
     );
   }
 }

@@ -127,7 +127,7 @@ class _LoginViewState extends State<LoginView> {
                           },
                           keyboardType: TextInputType.emailAddress,
                           textInputAction: TextInputAction.done,
-                          onFieldSubmitted: (_) {},
+                          onFieldSubmitted: isLoading ? null : (_) {},
                           enabled: !isLoading,
                         ),
                         const SizedBox(height: 24),

@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [BlocProvider.value(value: getIt<AuthenticationBloc>())],
       child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
         title: 'Community Board Bloc',
         theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
         routerConfig: getIt<GoRouter>(),

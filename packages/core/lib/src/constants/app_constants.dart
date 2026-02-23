@@ -34,3 +34,8 @@ abstract class DBFunctions {
   static const String updateCommentAndReturnCommentDisplayView =
       'update_comment_and_return_comment_display_view';
 }
+
+abstract class PostgresErrors {
+  static const String insufficientPrivilege = '42501';
+  static const String moreThanOneOrNoItemsReturned = 'PGRST116';
+}

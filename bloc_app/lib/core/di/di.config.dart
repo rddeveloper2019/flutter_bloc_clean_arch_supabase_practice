@@ -10,7 +10,9 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:data_supabase/auth.dart' as _i561;
+import 'package:data_supabase/post.dart' as _i816;
 import 'package:domain/auth.dart' as _i378;
+import 'package:domain/post.dart' as _i456;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:go_router/go_router.dart' as _i583;
 import 'package:injectable/injectable.dart' as _i526;
@@ -34,7 +36,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i561.AuthRemoteDatasource>(
       () => registerModule.authRemoteDatasource,
     );
+    gh.lazySingleton<_i816.PostRemoteDatasource>(
+      () => registerModule.postRemoteDatasource,
+    );
     gh.lazySingleton<_i378.AuthRepository>(() => registerModule.authRepository);
+    gh.lazySingleton<_i456.PostRepository>(() => registerModule.postRepository);
+    gh.factory<_i456.GetPostsUsecase>(() => registerModule.getPostsUsecase);
     gh.factory<_i378.SignupUseCase>(() => registerModule.signupUseCase);
     gh.factory<_i378.LoginUseCase>(() => registerModule.loginUseCase);
     gh.factory<_i378.LogoutUseCase>(() => registerModule.logoutUseCase);
@@ -70,9 +77,24 @@ class _$RegisterModule extends _i291.RegisterModule {
       );
 
   @override
+  _i816.SupabasePostRemoteDatasource get postRemoteDatasource =>
+      _i816.SupabasePostRemoteDatasource(
+        supabaseClient: _getIt<_i454.SupabaseClient>(),
+      );
+
+  @override
   _i561.AuthRepositoryImpl get authRepository => _i561.AuthRepositoryImpl(
     authRemoteDatasource: _getIt<_i561.AuthRemoteDatasource>(),
   );
+
+  @override
+  _i816.PostRepositoryImpl get postRepository => _i816.PostRepositoryImpl(
+    postRemoteDatasource: _getIt<_i816.PostRemoteDatasource>(),
+  );
+
+  @override
+  _i456.GetPostsUsecase get getPostsUsecase =>
+      _i456.GetPostsUsecase(postRepository: _getIt<_i456.PostRepository>());
 
   @override
   _i378.SignupUseCase get signupUseCase =>

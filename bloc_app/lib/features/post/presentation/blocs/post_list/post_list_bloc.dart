@@ -2,11 +2,13 @@ import 'package:bloc/bloc.dart';
 import 'package:core/errors.dart';
 import 'package:domain/post.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 part 'post_list_event.dart';
 part 'post_list_state.dart';
 
 const _pageSize = 5;
 
+@injectable
 class PostListBloc extends Bloc<PostListEvent, PostListState> {
   PostListBloc({required GetPostsUsecase getPostsUseCase})
     : _getPostsUseCase = getPostsUseCase,
@@ -14,6 +16,7 @@ class PostListBloc extends Bloc<PostListEvent, PostListState> {
     on<PostListFetched>(_onPostListFetched);
     on<PostListNextPageFetched>(_onPostListNextPageFetched);
     on<PostListRefreshed>(_onPostListRefreshed);
+    on<PostListTransientFailureConsumed>(_onPostListTransientFailureConsumed);
   }
 
   final GetPostsUsecase _getPostsUseCase;
@@ -116,5 +119,12 @@ class PostListBloc extends Bloc<PostListEvent, PostListState> {
         ),
       ),
     );
+  }
+
+  void _onPostListTransientFailureConsumed(
+    PostListTransientFailureConsumed event,
+    Emitter<PostListState> emit,
+  ) {
+    emit(state.copyWith(transientFailure: () => null));
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/di/di.dart';
 import '../blocs/post_list/post_list_bloc.dart';
+import '../widgets/post_card.dart';
 
 class PostPage extends StatelessWidget {
   const PostPage({super.key});
@@ -41,6 +42,12 @@ class _PostViewState extends State<PostView> {
   }
 
   void _onScroll() {
+    print(
+      '(**) => _scrollController.position.pixels:  ${_scrollController.position.pixels}',
+    );
+    print(
+      '(**) => _scrollController.position.maxScrollExtent:  ${_scrollController.position.maxScrollExtent}',
+    );
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
       context.read<PostListBloc>().add(PostListNextPageFetched());
@@ -50,6 +57,7 @@ class _PostViewState extends State<PostView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text('Posts')),
       body: BlocConsumer<PostListBloc, PostListState>(
         listenWhen: (prevState, currentStates) {
           final isTransientFailure =
@@ -70,9 +78,101 @@ class _PostViewState extends State<PostView> {
           }
         },
         builder: (context, state) {
-          return Center(child: Text('Post Page View'));
+          print('(**) => state.status:  ${state.status}');
+          switch (state.status) {
+            case PostListStatus.initial:
+            case PostListStatus.loading:
+              return const Center(child: CircularProgressIndicator());
+            case PostListStatus.failure:
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        state.failure?.message ?? 'Unknown error',
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.read<PostListBloc>().add(PostListFetched());
+                        },
+                        child: const Text('Retry'),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+
+            default:
+              if (state.posts.isEmpty) {
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    context.read<PostListBloc>().add(PostListRefreshed());
+                  },
+                  child: const NoPosts(),
+                );
+              }
+
+              return RefreshIndicator(
+                onRefresh: () async {
+                  context.read<PostListBloc>().add(PostListRefreshed());
+                },
+                child: ListView.builder(
+                  controller: _scrollController,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  itemCount: state.hasReachedMax
+                      ? state.posts.length
+                      : state.posts.length + 1,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (index >= state.posts.length) {
+                      return state.status == PostListStatus.fetchingNextPage
+                          ? const Center(
+                              child: Padding(
+                                padding: EdgeInsetsGeometry.all(20),
+                                child: CircularProgressIndicator(),
+                              ),
+                            )
+                          : const SizedBox.shrink();
+                    }
+
+                    final post = state.posts[index];
+
+                    return PostCard(post: post, onToggleLike: () {});
+                  },
+                ),
+              );
+          }
         },
       ),
+    );
+  }
+}
+
+class NoPosts extends StatelessWidget {
+  const NoPosts({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: const Center(
+              child: Text(
+                'There are no posts yet\nLog in with an admin account to create your first post!',
+                style: TextStyle(fontSize: 18),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

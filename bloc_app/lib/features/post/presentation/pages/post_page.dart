@@ -42,12 +42,6 @@ class _PostViewState extends State<PostView> {
   }
 
   void _onScroll() {
-    print(
-      '(**) => _scrollController.position.pixels:  ${_scrollController.position.pixels}',
-    );
-    print(
-      '(**) => _scrollController.position.maxScrollExtent:  ${_scrollController.position.maxScrollExtent}',
-    );
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
       context.read<PostListBloc>().add(PostListNextPageFetched());
@@ -78,7 +72,6 @@ class _PostViewState extends State<PostView> {
           }
         },
         builder: (context, state) {
-          print('(**) => state.status:  ${state.status}');
           switch (state.status) {
             case PostListStatus.initial:
             case PostListStatus.loading:

@@ -92,7 +92,7 @@ class PostCard extends StatelessWidget {
                           ),
                           Text(
                             DateFormat(
-                              'dd.mm.yyyy HH:mm',
+                              'dd.MM.yyyy HH:mm',
                             ).format(post.postCreatedAt),
                             style: Theme.of(context).textTheme.bodySmall,
                           ),

@@ -50,24 +50,25 @@ class PostFormBloc extends Bloc<PostFormEvent, PostFormState> {
         },
       );
       if (!success) return;
-
-      final createResult = await _createPostUsecase(
-        CreatePostParams(
-          postId: postId,
-          title: event.title,
-          content: event.content,
-          imageUrl: imageUrl,
-        ),
-      );
-
-      createResult.fold(
-        (failure) {
-          emit(PostFormLoadFailure(failure: failure));
-        },
-        (newPost) {
-          emit(PostFormLoadSuccess(data: newPost));
-        },
-      );
+      print('(**) => success:  ${success}');
     }
+
+    final createResult = await _createPostUsecase(
+      CreatePostParams(
+        postId: postId,
+        title: event.title,
+        content: event.content,
+        imageUrl: imageUrl,
+      ),
+    );
+
+    createResult.fold(
+      (failure) {
+        emit(PostFormLoadFailure(failure: failure));
+      },
+      (newPost) {
+        emit(PostFormLoadSuccess(data: newPost));
+      },
+    );
   }
 }

@@ -44,6 +44,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i378.AuthRepository>(() => registerModule.authRepository);
     gh.lazySingleton<_i456.PostRepository>(() => registerModule.postRepository);
     gh.factory<_i456.GetPostsUsecase>(() => registerModule.getPostsUsecase);
+    gh.factory<_i456.CreatePostUsecase>(() => registerModule.createPostUsecase);
+    gh.factory<_i456.UploadPostImageUsecase>(
+      () => registerModule.uploadPostImageUsecase,
+    );
     gh.factory<_i378.SignupUseCase>(() => registerModule.signupUseCase);
     gh.factory<_i378.LoginUseCase>(() => registerModule.loginUseCase);
     gh.factory<_i378.LogoutUseCase>(() => registerModule.logoutUseCase);
@@ -100,6 +104,16 @@ class _$RegisterModule extends _i291.RegisterModule {
   @override
   _i456.GetPostsUsecase get getPostsUsecase =>
       _i456.GetPostsUsecase(postRepository: _getIt<_i456.PostRepository>());
+
+  @override
+  _i456.CreatePostUsecase get createPostUsecase =>
+      _i456.CreatePostUsecase(postRepository: _getIt<_i456.PostRepository>());
+
+  @override
+  _i456.UploadPostImageUsecase get uploadPostImageUsecase =>
+      _i456.UploadPostImageUsecase(
+        postRepository: _getIt<_i456.PostRepository>(),
+      );
 
   @override
   _i378.SignupUseCase get signupUseCase =>

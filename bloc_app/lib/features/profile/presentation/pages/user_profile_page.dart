@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class UserProfilePage extends StatelessWidget {
   const UserProfilePage({super.key, required this.userId});
@@ -16,6 +17,15 @@ class UserProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text('User Profile Page View')));
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.chevron_left, size: 32),
+          onPressed: () => context.pop(),
+        ),
+        automaticallyImplyLeading: false,
+      ),
+      body: const Center(child: Text('User Profile Page View')),
+    );
   }
 }

@@ -20,7 +20,7 @@ class PostCard extends StatelessWidget {
     );
     return InkWell(
       onTap: () {
-        context.goNamed(
+        context.pushNamed(
           RouteNames.postDetail,
           pathParameters: {'postId': post.postId},
         );
@@ -40,7 +40,7 @@ class PostCard extends StatelessWidget {
                 onTap: () {
                   if (currentUserId == post.authorId) return;
 
-                  context.goNamed(
+                  context.pushNamed(
                     RouteNames.userDetail,
                     pathParameters: {'userId': post.authorId},
                   );

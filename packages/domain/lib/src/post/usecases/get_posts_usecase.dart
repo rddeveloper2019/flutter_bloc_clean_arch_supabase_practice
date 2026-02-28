@@ -1,7 +1,7 @@
-import 'package:core/src/errors/failures.dart';
+import 'package:core/errors.dart';
 import 'package:core/usecase.dart';
 import 'package:equatable/equatable.dart';
-import 'package:fpdart/src/either.dart';
+import 'package:fpdart/fpdart.dart';
 
 import '../entities/post_display.dart';
 import '../repositories/post_repository.dart';

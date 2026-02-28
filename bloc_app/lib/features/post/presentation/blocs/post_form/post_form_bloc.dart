@@ -6,6 +6,7 @@ import 'package:domain/post.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/bus/global_event_bus.dart';
 import '../../../../../core/utils/sealed_class_state.dart';
 
 part 'post_form_event.dart';
@@ -16,14 +17,17 @@ class PostFormBloc extends Bloc<PostFormEvent, PostFormState> {
   PostFormBloc({
     required CreatePostUsecase createPostUsecase,
     required UploadPostImageUsecase uploadPostImageUsecase,
+    required GlobalEventBus globalEventBus,
   }) : _createPostUsecase = createPostUsecase,
        _uploadPostImageUsecase = uploadPostImageUsecase,
+       _globalEventBus = globalEventBus,
        super(const PostFormInitial()) {
     on<PostSubmitted>(_onPostSubmitted);
   }
 
   final CreatePostUsecase _createPostUsecase;
   final UploadPostImageUsecase _uploadPostImageUsecase;
+  final GlobalEventBus _globalEventBus;
 
   Future<void> _onPostSubmitted(
     PostSubmitted event,
@@ -50,7 +54,6 @@ class PostFormBloc extends Bloc<PostFormEvent, PostFormState> {
         },
       );
       if (!success) return;
-      print('(**) => success:  ${success}');
     }
 
     final createResult = await _createPostUsecase(
@@ -67,6 +70,7 @@ class PostFormBloc extends Bloc<PostFormEvent, PostFormState> {
         emit(PostFormLoadFailure(failure: failure));
       },
       (newPost) {
+        _globalEventBus.add(PostCreatedDispatched(post: newPost));
         emit(PostFormLoadSuccess(data: newPost));
       },
     );

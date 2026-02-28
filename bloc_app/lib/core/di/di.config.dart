@@ -22,10 +22,13 @@ import '../../features/auth/presentation/blocs/authentication/authentication_blo
     as _i652;
 import '../../features/auth/presentation/blocs/login/login_bloc.dart' as _i1018;
 import '../../features/auth/presentation/blocs/signup/signup_bloc.dart' as _i41;
+import '../../features/post/presentation/blocs/post_detail/post_detail_bloc.dart'
+    as _i169;
 import '../../features/post/presentation/blocs/post_form/post_form_bloc.dart'
     as _i79;
 import '../../features/post/presentation/blocs/post_list/post_list_bloc.dart'
     as _i409;
+import '../bus/global_event_bus.dart' as _i91;
 import 'register_module.dart' as _i291;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -36,6 +39,10 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final registerModule = _$RegisterModule(this);
+    gh.singleton<_i91.GlobalEventBus>(
+      () => _i91.GlobalEventBus(),
+      dispose: (i) => i.dispose(),
+    );
     gh.singleton<_i454.SupabaseClient>(() => registerModule.supabaseClient);
     gh.lazySingleton<_i561.AuthRemoteDatasource>(
       () => registerModule.authRemoteDatasource,
@@ -50,17 +57,35 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i456.UploadPostImageUsecase>(
       () => registerModule.uploadPostImageUsecase,
     );
-    gh.factory<_i378.SignupUseCase>(() => registerModule.signupUseCase);
-    gh.factory<_i378.LoginUseCase>(() => registerModule.loginUseCase);
-    gh.factory<_i378.LogoutUseCase>(() => registerModule.logoutUseCase);
+    gh.factory<_i456.GetPostDetailUseCase>(
+      () => registerModule.getPostDetailUseCase,
+    );
+    gh.factory<_i456.GetCommentsUseCase>(
+      () => registerModule.getCommentsUseCase,
+    );
+    gh.factory<_i169.PostDetailBloc>(
+      () => _i169.PostDetailBloc(
+        getPostDetailUseCase: gh<_i456.GetPostDetailUseCase>(),
+      ),
+    );
     gh.factory<_i79.PostFormBloc>(
       () => _i79.PostFormBloc(
         createPostUsecase: gh<_i456.CreatePostUsecase>(),
         uploadPostImageUsecase: gh<_i456.UploadPostImageUsecase>(),
+        globalEventBus: gh<_i91.GlobalEventBus>(),
       ),
     );
+    gh.factory<_i378.SignupUseCase>(() => registerModule.signupUseCase);
+    gh.factory<_i378.LoginUseCase>(() => registerModule.loginUseCase);
+    gh.factory<_i378.LogoutUseCase>(() => registerModule.logoutUseCase);
     gh.factory<_i41.SignupBloc>(
       () => _i41.SignupBloc(signupUseCase: gh<_i378.SignupUseCase>()),
+    );
+    gh.factory<_i409.PostListBloc>(
+      () => _i409.PostListBloc(
+        getPostsUseCase: gh<_i456.GetPostsUsecase>(),
+        globalEventBus: gh<_i91.GlobalEventBus>(),
+      ),
     );
     gh.singleton<_i652.AuthenticationBloc>(
       () => _i652.AuthenticationBloc(
@@ -71,9 +96,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i1018.LoginBloc>(
       () => _i1018.LoginBloc(loginUseCase: gh<_i378.LoginUseCase>()),
-    );
-    gh.factory<_i409.PostListBloc>(
-      () => _i409.PostListBloc(getPostsUseCase: gh<_i456.GetPostsUsecase>()),
     );
     gh.singleton<_i583.GoRouter>(
       () => registerModule.router(gh<_i652.AuthenticationBloc>()),
@@ -122,6 +144,16 @@ class _$RegisterModule extends _i291.RegisterModule {
       _i456.UploadPostImageUsecase(
         postRepository: _getIt<_i456.PostRepository>(),
       );
+
+  @override
+  _i456.GetPostDetailUseCase get getPostDetailUseCase =>
+      _i456.GetPostDetailUseCase(
+        postRepository: _getIt<_i456.PostRepository>(),
+      );
+
+  @override
+  _i456.GetCommentsUseCase get getCommentsUseCase =>
+      _i456.GetCommentsUseCase(postRepository: _getIt<_i456.PostRepository>());
 
   @override
   _i378.SignupUseCase get signupUseCase =>

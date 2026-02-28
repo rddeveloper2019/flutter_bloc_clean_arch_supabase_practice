@@ -20,4 +20,12 @@ abstract class PostRepository {
     required File image,
     String? postId,
   });
+
+  Future<Either<Failure, PostDisplay>> getPostDetail({required String postId});
+
+  Future<Either<Failure, List<CommentDisplay>>> getComments({
+    required String postId,
+    required int offset,
+    required int limit,
+  });
 }
